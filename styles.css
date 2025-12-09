@@ -228,3 +228,22 @@ body.dark {
         gap: 20px;
     }
 }
+/* Reveal Animation */
+.reveal, .skill-box, .project-card {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.7s ease-in-out;
+}
+
+.reveal.active, 
+.skill-box.active,
+.project-card.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Navbar active link */
+.active-nav {
+    color: #ffffff !important;
+    font-weight: 600;
+}
