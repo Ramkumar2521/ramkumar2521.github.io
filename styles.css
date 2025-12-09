@@ -1,62 +1,117 @@
-
+/* Global */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f7fa;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom, #e8f1ff, #f5f7fa);
     color: #1e1e1e;
 }
 
+/* Header */
 header {
-    background: #4A90E2;
+    background: linear-gradient(135deg, #4A90E2, #6EC1E4);
     color: white;
-    padding: 40px 20px;
+    padding: 60px 20px;
     text-align: center;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    animation: slideDown 1s ease;
 }
 
+/* Navigation */
 nav {
-    background: #6EC1E4;
-    padding: 10px;
+    background: #ffffffd8;
+    padding: 12px;
     text-align: center;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(8px);
 }
 
 nav a {
-    color: white;
-    margin: 0 15px;
-    font-weight: bold;
+    color: #4A90E2;
+    margin: 0 18px;
     text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
+nav a:hover {
+    color: #6EC1E4;
+}
+
+/* Section */
 .section {
-    padding: 40px 20px;
+    padding: 50px 20px;
 }
 
+/* Skills Grid */
 .skill-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
 }
 
 .skill-grid span {
-    background: #E6F2FF;
-    padding: 10px;
-    border-radius: 8px;
+    background: #e6f2ff;
+    padding: 12px;
+    border-radius: 10px;
     text-align: center;
     font-weight: bold;
+    transition: transform 0.25s;
 }
 
+.skill-grid span:hover {
+    background: #d1e7ff;
+    transform: scale(1.05);
+}
+
+/* Project Cards */
 .project-card {
-    background: white;
+    background: #ffffff;
     margin: 20px 0;
     padding: 20px;
-    border-left: 5px solid #4A90E2;
-    border-radius: 6px;
+    border-left: 6px solid #4A90E2;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* Footer */
 footer {
     text-align: center;
-    padding: 20px;
+    padding: 25px;
     background: #4A90E2;
     color: white;
-    margin-top: 40px;
 }
 
+/* Animations */
+.fade-in {
+    animation: fadeIn 1.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Scroll Reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
