@@ -141,3 +141,6 @@ footer {
     border: 4px solid #4A90E2;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+.profile-pic {
+    animation: fadeIn 1.3s ease-in-out;
+}
