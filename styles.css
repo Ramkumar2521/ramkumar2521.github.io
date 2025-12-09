@@ -115,3 +115,16 @@ footer {
     opacity: 1;
     transform: translateY(0);
 }
+.resume-btn {
+    background: #4A90E2;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.resume-btn:hover {
+    background: #357ABD;
+}
