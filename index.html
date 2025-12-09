@@ -3,67 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramkumar Portfolio</title>
+    <title>Ramkumar – Data Science Portfolio</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="dark">
 
-    <!-- HERO SECTION -->
-    <header class="hero reveal">
-        <h1>Hi, I'm <span>Ramkumar</span></h1>
-        <p class="subtitle">Passionate Data Science Aspirant</p>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <h2 class="logo">Ramkumar</h2>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-        <p class="intro">
-            I am passionate about Python, SQL, Machine Learning, EDA, Forecasting, and Data Visualization. I love transforming raw data into meaningful insights and developing AI-driven solutions that solve real-world problems. With a strong foundation in analytics and a growing expertise in data science workflows, I enjoy exploring patterns, building predictive models, and turning data into actionable outcomes.
+    <!-- HERO -->
+    <section class="hero-section">
+        <div class="hero-left">
+            <p class="hello-text">Hello, I'm</p>
+            <h1 class="title">Ramkumar</h1>
+            <h2 class="subtitle">Data Science Aspirant</h2>
+
+            <a href="assets/resume.pdf" target="_blank" class="contact-btn">Download Resume</a>
+        </div>
+
+        <div class="hero-right">
+            <img src="assets/profile.jpg" class="hero-img" alt="Ramkumar">
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about-section">
+        <h2>About</h2>
+        <p>
+            I am passionate about Python, SQL, Machine Learning, EDA, Forecasting, and Data Visualization. 
+            I love transforming raw data into meaningful insights and building AI-driven solutions that solve 
+            real-world problems. With a strong foundation in analytics and hands-on project experience, I 
+            enjoy exploring patterns, developing predictive models, and delivering data-backed outcomes.
         </p>
-
-        <a class="resume-btn" href="assets/resume.pdf" target="_blank">📄 Download My Resume</a>
-
-        <!-- Profile Image -->
-        <img src="assets/profile.jpg" class="profile-pic" alt="Profile Photo">
-    </header>
+    </section>
 
     <!-- SKILLS -->
-    <section class="section reveal" id="skills">
-        <h2 class="section-title">Skills</h2>
-        <div class="skills-grid">
-            <span>Python</span>
-            <span>SQL</span>
-            <span>Machine Learning</span>
-            <span>EDA</span>
-            <span>Data Visualization</span>
-            <span>Forecasting</span>
+    <section id="skills" class="skills-section">
+        <h2>Skills</h2>
+        <div class="skills-row">
+            <div class="skill-box">Python</div>
+            <div class="skill-box">SQL</div>
+            <div class="skill-box">Machine Learning</div>
+            <div class="skill-box">EDA</div>
+            <div class="skill-box">Data Visualization</div>
+            <div class="skill-box">Forecasting</div>
         </div>
     </section>
 
     <!-- PROJECTS -->
-    <section class="section reveal" id="projects">
-        <h2 class="section-title">Projects</h2>
+    <section id="projects" class="projects-section">
+        <h2>Projects</h2>
 
-        <div class="project-card reveal">
+        <div class="project-card">
             <h3>Sales Forecasting Model</h3>
-            <p>Built a machine learning model to forecast retail sales using Python, Pandas, and Prophet.</p>
+            <p>Built a forecasting model using Pandas, Prophet & feature engineering.</p>
         </div>
 
-        <div class="project-card reveal">
+        <div class="project-card">
             <h3>E-Learning Platform with AI Chatbot</h3>
-            <p>Developed an interactive e-learning platform integrated with an intelligent chatbot.</p>
+            <p>Developed an interactive learning platform with integrated AI chatbot.</p>
         </div>
 
-        <div class="project-card reveal">
+        <div class="project-card">
             <h3>Customer Churn Prediction</h3>
-            <p>Predicted churn using classification models & behavior patterns.</p>
+            <p>Predicted churn using classification models & behavioral patterns.</p>
         </div>
     </section>
 
     <!-- CONTACT -->
-    <section class="section reveal" id="contact">
-        <h2 class="section-title">Contact</h2>
-        <p>Email: <a href="mailto:ramkumar2521@gmail.com">ramkumar2521@gmail.com</a></p>
-        <p>LinkedIn: <a href="#">Your LinkedIn Link</a></p>
+    <section id="contact" class="contact-section">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:ramkumar.devp@gmail.com">ramkumar2521@gmail.com</a></p>
         <p>GitHub: <a href="https://github.com/ramkumar2521">github.com/ramkumar2521</a></p>
+        <p>LinkedIn: <a href="www.linkedin.com/in/ramkumar-s-027949357">linkedin/ramkumar</a></p>
     </section>
 
-    <script src="script.js"></script>
 </body>
 </html>
