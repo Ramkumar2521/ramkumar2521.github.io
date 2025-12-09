@@ -1,21 +1,16 @@
-// Scroll reveal effect
+// Scroll Reveal Animation
 function reveal() {
-    let elements = document.querySelectorAll(".reveal");
+    const elements = document.querySelectorAll('.reveal');
 
-    for (let i = 0; i < elements.length; i++) {
-        let windowHeight = window.innerHeight;
-        let elementTop = elements[i].getBoundingClientRect().top;
-        let visible = 150;
+    elements.forEach((el) => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
 
-        if (elementTop < windowHeight - visible) {
-            elements[i].classList.add("active");
+        if (elementTop < windowHeight - 150) {
+            el.classList.add('active');
         }
-    }
+    });
 }
 
-window.addEventListener("scroll", reveal);
-
-// Initial trigger
-reveal();
-
-console.log("Portfolio Loaded Successfully with Animations!");
+window.addEventListener('scroll', reveal);
+reveal(); // Initial check
