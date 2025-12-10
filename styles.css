@@ -55,6 +55,35 @@ h2 {
     font-weight: 600;
 }
 
+/* ---------- MOBILE MENU BUTTON ---------- */
+.menu-btn {
+    width: 35px;
+    height: 28px;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.menu-btn span {
+    width: 100%;
+    height: 4px;
+    background: white;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+/* Menu open animation */
+.menu-btn.active span:nth-child(1) {
+    transform: translateY(12px) rotate(45deg);
+}
+.menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+.menu-btn.active span:nth-child(3) {
+    transform: translateY(-12px) rotate(-45deg);
+}
+
 /* ---------- HERO SECTION ---------- */
 
 .hero-section {
@@ -132,7 +161,7 @@ h2 {
     font-size: 17px;
 }
 
-/* ---------- SKILLS SECTION ---------- */
+/* ---------- SKILLS ---------- */
 
 .skills-section {
     padding: 80px 70px;
@@ -176,7 +205,7 @@ h2 {
     border-color: #5a9df9;
 }
 
-/* ---------- PROJECTS SECTION ---------- */
+/* ---------- PROJECTS ---------- */
 
 .projects-section {
     padding: 80px 70px;
@@ -238,7 +267,7 @@ h2 {
     text-decoration: underline;
 }
 
-/* ---------- SCROLL REVEAL ANIMATION ---------- */
+/* ---------- REVEAL ANIMATION ---------- */
 
 .reveal,
 .skill-box,
@@ -255,21 +284,36 @@ h2 {
     transform: translateY(0);
 }
 
-/* ---------- RESPONSIVE ---------- */
+/* ---------- MOBILE NAVIGATION ---------- */
 
 @media (max-width: 900px) {
+
+    .menu-btn {
+        display: flex;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 75px;
+        right: 0;
+        background: #1f1f22;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        padding: 25px 0;
+        transform: translateY(-200%);
+        transition: 0.4s ease-in-out;
+    }
+
+    .nav-links.open {
+        transform: translateY(0);
+    }
+
     .hero-section {
         flex-direction: column;
         text-align: center;
         padding: 60px 20px;
-    }
-
-    .navbar {
-        padding: 20px;
-    }
-
-    .nav-links {
-        gap: 20px;
     }
 
     .hero-right img.hero-img {
