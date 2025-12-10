@@ -1,85 +1,48 @@
-// -----------------------
-// MOBILE MENU TOGGLE
-// -----------------------
-const navLinks = document.querySelector(".nav-links");
-const menuBtn = document.querySelector(".menu-btn");
+/* -------------------------------
+   MOBILE MENU TOGGLE
+--------------------------------*/
+const menuBtn = document.querySelector('.menu-btn');
+const navLinks = document.querySelector('.nav-links');
 
-if (menuBtn) {
-    menuBtn.addEventListener("click", () => {
-        navLinks.classList.toggle("active");
-        menuBtn.classList.toggle("open");
+menuBtn.addEventListener('click', () => {
+    menuBtn.classList.toggle('active');
+    navLinks.classList.toggle('open');
+});
+
+/* Close menu when clicking a link */
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuBtn.classList.remove('active');
     });
-}
+});
 
-// -----------------------
-// SMOOTH SCROLL
-// -----------------------
+/* -------------------------------
+   SECTION REVEAL ANIMATION
+--------------------------------*/
+const revealElements = document.querySelectorAll(
+    '.reveal, .skill-box, .project-card'
+);
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+        }
+    });
+}, {
+    threshold: 0.15
+});
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+/* -------------------------------
+   SMOOTH SCROLLING
+--------------------------------*/
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener("click", function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute("href"));
-        if (target) {
-            window.scrollTo({
-                top: target.offsetTop - 50,
-                behavior: "smooth"
-            });
-        }
-        if (navLinks.classList.contains("active")) {
-            navLinks.classList.remove("active");
-        }
+        document.querySelector(this.getAttribute("href"))
+            .scrollIntoView({ behavior: "smooth" });
     });
 });
-
-// -----------------------
-// REVEAL ON SCROLL
-// -----------------------
-function reveal() {
-    const reveals = document.querySelectorAll(".reveal");
-
-    for (let i = 0; i < reveals.length; i++) {
-        let windowHeight = window.innerHeight;
-        let elementTop = reveals[i].getBoundingClientRect().top;
-        let revealPoint = 150;
-
-        if (elementTop < windowHeight - revealPoint) {
-            reveals[i].classList.add("active");
-        }
-    }
-}
-
-window.addEventListener("scroll", reveal);
-reveal(); // run on load
-
-// -----------------------
-// NAVBAR SHADOW ON SCROLL
-// -----------------------
-const navbar = document.querySelector(".navbar");
-
-window.addEventListener("scroll", () => {
-    if (window.scrollY > 10) {
-        navbar.classList.add("scrolled");
-    } else {
-        navbar.classList.remove("scrolled");
-    }
-});
-
-// -----------------------
-// DARK MODE (Optional Toggle Support)
-// -----------------------
-const body = document.body;
-
-function enableDarkMode() {
-    body.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-}
-
-function disableDarkMode() {
-    body.classList.remove("dark");
-    localStorage.setItem("theme", "light");
-}
-
-(function applyStoredTheme() {
-    if (localStorage.getItem("theme") === "dark") {
-        enableDarkMode();
-    }
-})();
