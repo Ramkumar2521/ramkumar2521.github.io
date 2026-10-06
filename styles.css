@@ -183,3 +183,87 @@ h2 { letter-spacing: 0.5px; }
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .reveal, .skill-box, .project-card, .hello-text, .title, .subtitle, .contact-btn { opacity: 1 !important; transform: none !important; }
 }
+
+/* =====================================================
+   GLASSMORPHISM + 3D FLOATING THEME
+===================================================== */
+body.dark {
+    background:
+        radial-gradient(circle at 15% 20%, #2a1766 0, transparent 45%),
+        radial-gradient(circle at 85% 75%, #0b3b6b 0, transparent 45%),
+        #070714;
+    background-attachment: fixed;
+}
+.blob-1 { background: #7c5cff; opacity: 0.4; }
+.blob-2 { background: #00c2ff; opacity: 0.32; }
+
+/* glass surface shared by all panels */
+.navbar, .skills-group, .project-card, .skill-box, .about-section, .contact-section, .chip {
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03));
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.navbar { border-radius: 0 0 22px 22px; }
+.about-section, .contact-section { border-radius: 24px; }
+.about-section { padding: 50px; margin: 40px auto; }
+.contact-section { margin: 40px 70px 70px; padding: 50px; }
+.skills-group { padding: 26px; border-radius: 22px; margin-top: 26px; }
+.skill-box { border-radius: 14px; }
+.project-card { border-radius: 22px; }
+.skills-group.active .skill-box:hover, .project-card.tilting {
+    border-color: rgba(124,92,255,0.8);
+    box-shadow: 0 20px 50px rgba(124,92,255,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.tags span { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color: #cfd6ff; }
+.repo-link, .contact-section a, .subtitle { color: #8fb4ff; }
+.contact-btn { background: linear-gradient(135deg, #7c5cff, #00c2ff); }
+
+/* 3D tilt for the hero image + floating chips */
+.hero-right { position: relative; transform-style: preserve-3d; transition: transform 0.15s ease-out; padding: 30px; }
+.hero-img { border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 30px 70px rgba(0,0,0,0.55); }
+.chip {
+    position: absolute; padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 600;
+    z-index: 3; white-space: nowrap; animation: chipFloat 5s ease-in-out infinite;
+}
+.c1 { top: 0; left: -30px; }
+.c2 { top: 28%; right: -70px; animation-delay: -1.2s; }
+.c3 { bottom: 18%; left: -50px; animation-delay: -2.4s; }
+.c4 { bottom: 0; right: -20px; animation-delay: -3.6s; }
+@keyframes chipFloat {
+    0%, 100% { transform: translateZ(70px) translateY(0); }
+    50% { transform: translateZ(90px) translateY(-14px); }
+}
+
+/* floating 3D background shapes */
+.scene { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.shape { position: absolute; will-change: transform; }
+.shape i { display: block; animation: drift 9s ease-in-out infinite; }
+.orb {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 28%, #fff9 0, #8d7bff 25%, #3a1fa8 65%, #120a3a 100%);
+    box-shadow: 0 25px 60px rgba(124,92,255,0.45);
+}
+.orb.small { width: 64px; height: 64px; background: radial-gradient(circle at 30% 28%, #fff9 0, #4fd8ff 28%, #0a5d9c 70%, #06203d 100%); box-shadow: 0 20px 45px rgba(0,194,255,0.4); animation-delay: -3s; }
+.ring {
+    width: 130px; height: 130px; border-radius: 50%; border: 16px solid rgba(255,255,255,0.14);
+    box-shadow: inset 0 0 25px rgba(255,255,255,0.18), 0 0 40px rgba(124,92,255,0.25);
+    backdrop-filter: blur(4px); animation: drift 11s ease-in-out infinite, tumble 16s linear infinite;
+}
+.ring.thin { width: 90px; height: 90px; border-width: 6px; opacity: 0.5; }
+.cube {
+    width: 90px; height: 90px; border-radius: 22px; background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px);
+    animation: drift 10s ease-in-out infinite, tumble 20s linear infinite reverse;
+}
+@keyframes drift { 50% { translate: 0 -30px; } }
+@keyframes tumble { to { rotate: 360deg; } }
+
+@media (max-width: 900px) {
+    .chip, .scene .ring { display: none; }
+    .about-section { margin: 30px 20px; padding: 30px 22px; }
+    .contact-section { margin: 30px 20px 60px; padding: 30px 22px; }
+    .skills-group { padding: 18px; }
+    .navbar { border-radius: 0; }
+}
