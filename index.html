@@ -3,174 +3,501 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Ramkumar, a Data Science aspirant skilled in Python, SQL and Machine Learning.">
-    <title>Ramkumar – Data Science Portfolio</title>
+
+    <meta name="description"
+          content="Portfolio of Ramkumar – Data Science, Machine Learning and Software Development.">
+
+    <title>Ramkumar | Data Science Portfolio</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=3">
-</head>
-<body class="dark">
 
-    <div class="progress-bar"></div>
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
-    <div class="cursor-glow"></div>
-    <div class="scene">
-        <div class="shape" data-depth="26" style="top:14%;left:7%"><i class="orb"></i></div>
-        <div class="shape" data-depth="40" style="top:62%;left:4%"><i class="ring"></i></div>
-        <div class="shape" data-depth="18" style="top:18%;right:6%"><i class="cube"></i></div>
-        <div class="shape" data-depth="34" style="top:70%;right:9%"><i class="orb small"></i></div>
-        <div class="shape" data-depth="22" style="top:42%;left:46%"><i class="ring thin"></i></div>
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="#" class="logo">Ramkumar</a>
+
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <button class="menu-btn" aria-label="Open navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<main>
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <p class="eyebrow">DATA SCIENCE • AI • SOFTWARE</p>
+
+        <p class="hello">Hello, I'm</p>
+
+        <h1>Ramkumar</h1>
+
+        <h2>
+            <span id="typed"></span>
+            <span class="caret"></span>
+        </h2>
+
+        <p class="hero-description">
+            I transform data into meaningful insights and build
+            practical technology solutions using Python, SQL,
+            Machine Learning and modern development tools.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="assets/resume.pdf"
+               target="_blank"
+               rel="noopener"
+               class="primary-btn">
+                Download Resume
+            </a>
+
+            <a href="#projects" class="secondary-btn">
+                Explore Projects
+            </a>
+
+        </div>
+
     </div>
 
-    <nav class="navbar">
-        <h2 class="logo">Ramkumar</h2>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></div>
-    </nav>
 
-    <section class="hero-section">
-        <div class="hero-left">
-            <p class="hello-text">Hello, I'm</p>
-            <h1 class="title">Ramkumar</h1>
-            <h2 class="subtitle"><span id="typed"></span><span class="caret"></span></h2>
-            <a href="assets/resume.pdf" target="_blank" rel="noopener" class="contact-btn">Download Resume</a>
-        </div>
-        <div class="hero-right">
-            <span class="chip c1">Python</span>
-            <span class="chip c2">Machine Learning</span>
-            <span class="chip c3">SQL</span>
-            <span class="chip c4">Power BI</span>
-            <div class="img-wrap">
-                <img src="assets/profile.jpg" class="hero-img" alt="Ramkumar">
-            </div>
-        </div>
-    </section>
+    <div class="hero-visual">
 
-    <section id="about" class="about-section reveal">
-        <h2>About</h2>
+        <div class="floating-card card-python">
+            Python
+        </div>
+
+        <div class="floating-card card-ml">
+            Machine Learning
+        </div>
+
+        <div class="floating-card card-sql">
+            SQL
+        </div>
+
+        <div class="floating-card card-powerbi">
+            Power BI
+        </div>
+
+        <div class="profile-container">
+
+            <div class="profile-ring"></div>
+
+            <img src="assets/profile.jpg"
+                 alt="Ramkumar profile photo"
+                 class="profile-image">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section id="about" class="content-section reveal">
+
+    <div class="section-label">
+        01 / ABOUT
+    </div>
+
+    <div class="section-content">
+
+        <h2>
+            Turning data<br>
+            into <span>decisions.</span>
+        </h2>
+
         <p>
-            I am passionate about Python, SQL, Machine Learning, EDA, Forecasting, and Data Visualization.
-            I enjoy transforming raw data into actionable insights and building scalable data-driven solutions.
-            With hands-on experience in predictive modelling, automation, and analytics, I strive to solve
-            real-world problems using statistical and machine learning approaches.
+            I am passionate about Python, SQL, Machine Learning,
+            Exploratory Data Analysis, Forecasting and Data
+            Visualization.
         </p>
-    </section>
 
-    <section id="skills" class="skills-section">
-        <h2 class="reveal">Skills</h2>
+        <p>
+            I enjoy transforming raw data into actionable insights
+            and developing data-driven solutions for real-world
+            problems.
+        </p>
 
-        <div class="skills-group reveal">
-            <h3>Programming</h3>
-            <div class="skills-row">
-                <div class="skill-box">Python</div><div class="skill-box">Java</div><div class="skill-box">SQL</div><div class="skill-box">R</div>
+    </div>
+
+</section>
+
+
+<!-- ================= SKILLS ================= -->
+
+<section id="skills" class="content-section skills-section">
+
+    <div class="section-label">
+        02 / SKILLS
+    </div>
+
+    <div class="section-content">
+
+        <h2>
+            My <span>toolkit.</span>
+        </h2>
+
+
+        <div class="skills-container">
+
+            <div class="skill-category reveal">
+                <h3>Programming</h3>
+
+                <div class="skills-row">
+                    <span>Python</span>
+                    <span>Java</span>
+                    <span>SQL</span>
+                    <span>R</span>
+                </div>
             </div>
+
+
+            <div class="skill-category reveal">
+                <h3>Data Science</h3>
+
+                <div class="skills-row">
+                    <span>Machine Learning</span>
+                    <span>EDA</span>
+                    <span>Forecasting</span>
+                    <span>Statistics</span>
+                </div>
+            </div>
+
+
+            <div class="skill-category reveal">
+                <h3>Computer Science</h3>
+
+                <div class="skills-row">
+                    <span>DSA</span>
+                    <span>OOP</span>
+                    <span>OS</span>
+                    <span>Agile</span>
+                </div>
+            </div>
+
+
+            <div class="skill-category reveal">
+                <h3>Databases</h3>
+
+                <div class="skills-row">
+                    <span>MySQL</span>
+                    <span>Oracle</span>
+                    <span>MongoDB</span>
+                </div>
+            </div>
+
+
+            <div class="skill-category reveal">
+                <h3>Analytics & Tools</h3>
+
+                <div class="skills-row">
+                    <span>Power BI</span>
+                    <span>Tableau</span>
+                    <span>Pandas</span>
+                    <span>NumPy</span>
+                    <span>Matplotlib</span>
+                    <span>TensorFlow</span>
+                    <span>GitHub</span>
+                    <span>Docker</span>
+                </div>
+            </div>
+
+
+            <div class="skill-category reveal">
+                <h3>Web</h3>
+
+                <div class="skills-row">
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+                    <span>PHP</span>
+                </div>
+            </div>
+
         </div>
 
-        <div class="skills-group reveal">
-            <h3>Data Science</h3>
-            <div class="skills-row">
-                <div class="skill-box">Machine Learning</div><div class="skill-box">EDA</div><div class="skill-box">Forecasting</div><div class="skill-box">Statistics</div>
-            </div>
-        </div>
+    </div>
 
-        <div class="skills-group reveal">
-            <h3>CS Fundamentals</h3>
-            <div class="skills-row">
-                <div class="skill-box">DSA</div><div class="skill-box">OOP</div><div class="skill-box">OS</div><div class="skill-box">Agile</div>
-            </div>
-        </div>
+</section>
 
-        <div class="skills-group reveal">
-            <h3>Databases</h3>
-            <div class="skills-row">
-                <div class="skill-box">MySQL</div><div class="skill-box">Oracle</div><div class="skill-box">MongoDB</div>
-            </div>
-        </div>
 
-        <div class="skills-group reveal">
-            <h3>Tools & Platforms</h3>
-            <div class="skills-row">
-                <div class="skill-box">GitHub</div><div class="skill-box">Docker</div><div class="skill-box">Power BI</div><div class="skill-box">Tableau</div>
-                <div class="skill-box">Pandas</div><div class="skill-box">NumPy</div><div class="skill-box">Matplotlib</div><div class="skill-box">TensorFlow</div>
-            </div>
-        </div>
+<!-- ================= PROJECTS ================= -->
 
-        <div class="skills-group reveal">
-            <h3>Web Technologies</h3>
-            <div class="skills-row">
-                <div class="skill-box">HTML</div><div class="skill-box">CSS</div><div class="skill-box">JavaScript (Basics)</div><div class="skill-box">PHP</div>
-            </div>
-        </div>
-    </section>
+<section id="projects" class="content-section projects-section">
 
-    <section id="projects" class="projects-section">
-        <h2 class="reveal">Projects</h2>
+    <div class="section-label">
+        03 / PROJECTS
+    </div>
+
+    <div class="section-content">
+
+        <h2>
+            Selected <span>work.</span>
+        </h2>
+
+
         <div class="projects-grid">
 
-            <article class="project-card tilt">
-                <h3>Renewable Energy Trend Analysis & Forecasting</h3>
-                <p>Time-series forecasting of renewable energy production in India using ARIMA. Cleaned and visualized a Kaggle dataset, identified historical growth patterns and forecasted future trends.</p>
-                <div class="tags"><span>Python</span><span>ARIMA</span><span>Time Series</span></div>
-                <a class="repo-link" href="https://github.com/Ramkumar2521/renewable-energy-arima" target="_blank" rel="noopener">View on GitHub →</a>
+
+            <article class="project-card tilt reveal">
+
+                <div class="project-number">01</div>
+
+                <h3>
+                    Renewable Energy Trend
+                    Analysis & Forecasting
+                </h3>
+
+                <p>
+                    Time-series forecasting of renewable energy
+                    production in India using ARIMA. The project
+                    includes data cleaning, visualization,
+                    historical trend analysis and future forecasting.
+                </p>
+
+                <div class="tags">
+                    <span>Python</span>
+                    <span>ARIMA</span>
+                    <span>Time Series</span>
+                </div>
+
+                <a href="https://github.com/Ramkumar2521/renewable-energy-arima"
+                   target="_blank"
+                   rel="noopener">
+                    View Project →
+                </a>
+
             </article>
 
-            <article class="project-card tilt">
-                <h3>Heart Disease Prediction</h3>
-                <p>Logistic regression model predicting heart disease from clinical features such as age, cholesterol, blood pressure, heart rate and ECG data, with data cleaning and EDA.</p>
-                <div class="tags"><span>R</span><span>Logistic Regression</span><span>EDA</span></div>
-                <a class="repo-link" href="https://github.com/Ramkumar2521/-Heart-Disease-Prediction-Using-Logistic-Regression" target="_blank" rel="noopener">View on GitHub →</a>
+
+            <article class="project-card tilt reveal">
+
+                <div class="project-number">02</div>
+
+                <h3>
+                    Heart Disease
+                    Prediction
+                </h3>
+
+                <p>
+                    Machine learning project using Logistic Regression
+                    to predict heart disease from clinical features
+                    including age, cholesterol, blood pressure and ECG
+                    information.
+                </p>
+
+                <div class="tags">
+                    <span>R</span>
+                    <span>Logistic Regression</span>
+                    <span>EDA</span>
+                </div>
+
+                <a href="https://github.com/Ramkumar2521/-Heart-Disease-Prediction-Using-Logistic-Regression"
+                   target="_blank"
+                   rel="noopener">
+                    View Project →
+                </a>
+
             </article>
 
-            <article class="project-card tilt">
-                <h3>Online E-Learning Platform with AI Chatbot</h3>
-                <p>Full-stack e-learning platform with an integrated AI chatbot that answers learner queries and delivers course content through a user-friendly interface.</p>
-                <div class="tags"><span>PHP</span><span>Python</span><span>NLP</span></div>
-                <a class="repo-link" href="https://github.com/Ramkumar2521/Online-E-Learning-platform-with-integrated-AI-chatbot-" target="_blank" rel="noopener">View on GitHub →</a>
+
+            <article class="project-card tilt reveal">
+
+                <div class="project-number">03</div>
+
+                <h3>
+                    Online E-Learning
+                    Platform + AI Chatbot
+                </h3>
+
+                <p>
+                    Full-stack e-learning platform with an integrated
+                    AI chatbot designed to answer learner questions
+                    and provide course content through an interactive
+                    interface.
+                </p>
+
+                <div class="tags">
+                    <span>PHP</span>
+                    <span>Python</span>
+                    <span>NLP</span>
+                </div>
+
+                <a href="https://github.com/Ramkumar2521/Online-E-Learning-platform-with-integrated-AI-chatbot-"
+                   target="_blank"
+                   rel="noopener">
+                    View Project →
+                </a>
+
             </article>
 
-            <article class="project-card tilt">
+
+            <article class="project-card tilt reveal">
+
+                <div class="project-number">04</div>
+
                 <h3>E-Commerce Website</h3>
-                <p>A front-end e-commerce website with product listings and a clean shopping layout.</p>
-                <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
-                <a class="repo-link" href="https://github.com/Ramkumar2521/E-Commerce-Website" target="_blank" rel="noopener">View on GitHub →</a>
+
+                <p>
+                    Responsive front-end e-commerce website with
+                    product listings and a clean shopping experience.
+                </p>
+
+                <div class="tags">
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+                </div>
+
+                <a href="https://github.com/Ramkumar2521/E-Commerce-Website"
+                   target="_blank"
+                   rel="noopener">
+                    View Project →
+                </a>
+
             </article>
 
-            <article class="project-card tilt">
-                <h3>Web Application Projects</h3>
-                <p>A collection of small web applications built while learning front-end development.</p>
-                <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
-                <a class="repo-link" href="https://github.com/Ramkumar2521/Web-Application-Projects" target="_blank" rel="noopener">View on GitHub →</a>
+
+            <article class="project-card tilt reveal">
+
+                <div class="project-number">05</div>
+
+                <h3>
+                    E-Commerce Inventory
+                    Management System
+                </h3>
+
+                <p>
+                    Inventory management system using Python and
+                    MySQL with automated stock updates, search,
+                    filtering and order management.
+                </p>
+
+                <div class="tags">
+                    <span>Python</span>
+                    <span>MySQL</span>
+                    <span>Automation</span>
+                </div>
+
             </article>
 
-            <article class="project-card tilt">
-                <h3>E-Commerce Inventory Management System</h3>
-                <p>Inventory system using Python and MySQL that automates stock updates, with advanced search, filtering and streamlined order management.</p>
-                <div class="tags"><span>Python</span><span>MySQL</span><span>Automation</span></div>
-            </article>
 
-            <article class="project-card tilt">
-                <h3>IoT-Based Laser Security System</h3>
-                <p>Real-time intrusion detection with camera surveillance, motion-triggered alerts and LPG gas leak monitoring for continuous home safety.</p>
-                <div class="tags"><span>IoT</span><span>Sensors</span><span>Alerts</span></div>
+            <article class="project-card tilt reveal">
+
+                <div class="project-number">06</div>
+
+                <h3>
+                    IoT Laser
+                    Security System
+                </h3>
+
+                <p>
+                    Real-time security system combining camera
+                    surveillance, motion detection, alerts and LPG
+                    gas-leak monitoring.
+                </p>
+
+                <div class="tags">
+                    <span>IoT</span>
+                    <span>Sensors</span>
+                    <span>Security</span>
+                </div>
+
             </article>
 
         </div>
-    </section>
 
-    <section id="contact" class="contact-section reveal">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:ramkumar.devp@gmail.com">ramkumar.devp@gmail.com</a></p>
-        <p>GitHub: <a href="https://github.com/Ramkumar2521" target="_blank" rel="noopener">github.com/Ramkumar2521</a></p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/ramkumar-s-027949357/" target="_blank" rel="noopener">LinkedIn Profile</a></p>
-    </section>
+    </div>
 
-    <script src="script.js?v=3"></script>
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section id="contact" class="contact-section content-section">
+
+    <div class="section-label">
+        04 / CONTACT
+    </div>
+
+    <div class="contact-content">
+
+        <p class="contact-small">
+            HAVE A PROJECT OR OPPORTUNITY?
+        </p>
+
+        <h2>
+            Let's build<br>
+            something <span>great.</span>
+        </h2>
+
+        <a href="mailto:ramkumar.devp@gmail.com"
+           class="email-link">
+            ramkumar.devp@gmail.com
+        </a>
+
+        <div class="social-links">
+
+            <a href="https://github.com/Ramkumar2521"
+               target="_blank"
+               rel="noopener">
+                GitHub
+            </a>
+
+            <a href="https://www.linkedin.com/in/ramkumar-s-027949357/"
+               target="_blank"
+               rel="noopener">
+                LinkedIn
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <p>© 2026 Ramkumar</p>
+
+    <p>
+        Designed & built with HTML, CSS & JavaScript
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
 </body>
 </html>
