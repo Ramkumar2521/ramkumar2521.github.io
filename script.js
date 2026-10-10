@@ -544,7 +544,7 @@ if (videoFrame && motionCanvas) {
 
 
 /* =====================================================
-   VOICE: NATURAL NARRATION + VOICE COMMANDS
+   VOICE: MALE NARRATOR + VOICE COMMANDS
 ===================================================== */
 
 const listenBtn = document.getElementById("listenBtn");
@@ -557,9 +557,7 @@ const SpeechRec =
     window.SpeechRecognition || window.webkitSpeechRecognition;
 
 
-/* ---------- What the voice says (edit freely) ----------
-   Written the way you'd talk, not copied from the page.
-   Tip: commas make short breaths, full stops make longer pauses. */
+/* ---------- What the voice says (edit freely) ---------- */
 
 const voiceScripts = {
 
@@ -608,16 +606,17 @@ const voiceScripts = {
 
 let speechToken = 0;
 let toastTimer;
-let chosenVoice = null;
+let narrator = null;
+let narratorPitch = 1;
 let currentAudio = null;
 
-function showToast(message) {
+function showToast(message, duration = 2800) {
     if (!voiceToast) return;
     voiceToast.textContent = message;
     voiceToast.classList.add("show");
     clearTimeout(toastTimer);
     toastTimer = setTimeout(
-        () => voiceToast.classList.remove("show"), 2800
+        () => voiceToast.classList.remove("show"), duration
     );
 }
 
@@ -628,14 +627,18 @@ function setSpeakingUI(on) {
 }
 
 
-/* ---------- Choose the most natural voice available ---------- */
+/* ---------- Pick ONE male English voice ---------- */
+
+const MALE_NAMES =
+    /\b(male|guy|ryan|prabhat|ravi|rishi|daniel|alex|fred|mark|david|george|thomas|oliver|arthur|aaron|james|christopher|eric|brian|roger|steffan|liam|william|connor|mitchell)\b/i;
+
+const FEMALE_NAMES =
+    /\b(female|aria|jenny|sonia|neerja|samantha|karen|moira|serena|zira|susan|hazel|heera|kalpana|libby|michelle|ava|emma|natasha|clara|catherine|veena|tessa)\b/i;
 
 function scoreVoice(voice) {
 
     const name = voice.name.toLowerCase();
     const lang = voice.lang.toLowerCase().replace("_", "-");
-
-    if (!lang.startsWith("en")) return -1000;
 
     let score = 0;
 
@@ -643,8 +646,6 @@ function scoreVoice(voice) {
     if (name.includes("neural")) score += 90;
     if (name.includes("google")) score += 50;     // Chrome
     if (name.includes("online")) score += 30;
-    if (/aria|jenny|sonia|neerja|prabhat|ryan|guy|samantha|karen|moira|serena|daniel/
-        .test(name)) score += 20;
 
     if (lang === "en-in") score += 15;
     else if (lang === "en-us" || lang === "en-gb") score += 10;
@@ -658,76 +659,23 @@ function loadVoices() {
 
     if (!synth) return;
 
-    const voices = synth.getVoices()
-        .filter(v => v.lang.toLowerCase().startsWith("en"))
+    const english = synth.getVoices()
+        .filter(v => v.lang.toLowerCase().startsWith("en"));
+
+    if (!english.length) return;
+
+    const males = english
+        .filter(v => MALE_NAMES.test(v.name) && !FEMALE_NAMES.test(v.name))
         .sort((a, b) => scoreVoice(b) - scoreVoice(a));
 
-    if (!voices.length) return;
-
-    let saved = null;
-    try { saved = localStorage.getItem("portfolioVoice"); } catch (e) {}
-
-    chosenVoice =
-        voices.find(v => v.name === saved) || voices[0];
-
-    buildVoiceSelect(voices);
-}
-
-function buildVoiceSelect(voices) {
-
-    if (!voiceDock || voices.length < 2) return;
-
-    let select = document.getElementById("voiceSelect");
-
-    if (!select) {
-
-        const style = document.createElement("style");
-        style.textContent = `
-            .voice-select {
-                max-width: 150px;
-                padding: 10px 12px;
-                border: 1px solid rgba(255,255,255,.2);
-                border-radius: 50px;
-                background: rgba(20,20,20,.75);
-                color: white;
-                font-family: inherit;
-                font-size: 10px;
-                letter-spacing: .08em;
-                cursor: pointer;
-            }
-            .voice-select:hover { border-color: #b44cff; }
-            .voice-select option { background: #111; color: white; }
-            @media (max-width: 500px) { .voice-select { display: none; } }
-        `;
-        document.head.appendChild(style);
-
-        select = document.createElement("select");
-        select.id = "voiceSelect";
-        select.className = "voice-select";
-        select.setAttribute("aria-label", "Choose narrator voice");
-        voiceDock.prepend(select);
-
-        select.addEventListener("change", () => {
-            chosenVoice =
-                voices.find(v => v.name === select.value) || chosenVoice;
-            try {
-                localStorage.setItem("portfolioVoice", select.value);
-            } catch (e) {}
-            readCurrentSection();   // preview the new voice
-        });
+    if (males.length) {
+        narrator = males[0];
+        narratorPitch = 1;
+    } else {
+        // no male voice installed: use the best voice, pitched lower
+        narrator = english.sort((a, b) => scoreVoice(b) - scoreVoice(a))[0];
+        narratorPitch = 0.75;
     }
-
-    select.innerHTML = "";
-
-    voices.forEach(voice => {
-        const option = document.createElement("option");
-        option.value = voice.name;
-        option.textContent =
-            voice.name.replace(/Microsoft |Online \(Natural\) - /g, "");
-        if (chosenVoice && voice.name === chosenVoice.name)
-            option.selected = true;
-        select.appendChild(option);
-    });
 }
 
 if (synth) {
@@ -779,15 +727,15 @@ function speakText(text) {
         const sentence = parts[index];
         const utterance = new SpeechSynthesisUtterance(sentence);
 
-        if (chosenVoice) {
-            utterance.voice = chosenVoice;
-            utterance.lang = chosenVoice.lang;
+        if (narrator) {
+            utterance.voice = narrator;
+            utterance.lang = narrator.lang;
         } else {
             utterance.lang = "en-IN";
         }
 
         utterance.rate = 0.96;
-        utterance.pitch = sentence.endsWith("?") ? 1.08 : 1;
+        utterance.pitch = narratorPitch + (sentence.endsWith("?") ? 0.06 : 0);
 
         utterance.onend = () => {
             setTimeout(() => next(index + 1), 280);
@@ -834,8 +782,9 @@ function readCurrentSection() {
     stopSpeaking();
     const myToken = speechToken;
 
-    // 1) If you recorded your own voice, use it: assets/voice/<section>.mp3
-    //    (e.g. assets/voice/about.mp3). 2) Otherwise use the browser voice.
+    // Optional: your own recording at assets/voice/<section>.mp3
+    // (home, about, skills, projects, showcase, contact).
+    // If the file isn't there, the male browser voice is used.
     const fallback = () => {
         if (myToken === speechToken) speakText(script);
     };
@@ -859,97 +808,185 @@ function readCurrentSection() {
 
 /* ---------- Voice commands ---------- */
 
-function goTo(id, label) {
+function goTo(id) {
     const target = document.getElementById(id);
-    if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-        showToast(`Going to ${label}`);
-    }
+    if (target) target.scrollIntoView({ behavior: "smooth" });
 }
 
-function handleCommand(raw) {
-    const said = raw.toLowerCase().trim();
-    showToast(`"${said}"`);
+/* Order matters: the first match wins. */
+const commands = [
 
-    if (/\b(stop|quiet|silence)\b/.test(said)) return stopSpeaking();
-    if (/\b(read|listen|speak|tell me)\b/.test(said)) return readCurrentSection();
+    { say: "pause video",
+      words: /\b(pause|stop) (the )?(video|animation)\b|\bpause\b/,
+      label: "Video paused",
+      run: () => window.setShowcasePaused && window.setShowcasePaused(true) },
 
-    if (/\b(pause)\b/.test(said) && window.setShowcasePaused)
-        return window.setShowcasePaused(true);
-    if (/\b(play|video|animation)\b/.test(said) && window.setShowcasePaused) {
-        goTo("showcase", "showcase");
-        return window.setShowcasePaused(false);
+    { say: "play video",
+      words: /\b(play|start) (the )?(video|animation)\b|\bplay\b|\bvideo\b|\banimation\b/,
+      label: "Playing video",
+      run: () => {
+          goTo("showcase");
+          if (window.setShowcasePaused) window.setShowcasePaused(false);
+      } },
+
+    { say: "stop",
+      words: /\b(stop|quiet|silence|enough)\b/,
+      label: "Stopped",
+      run: () => stopSpeaking() },
+
+    { say: "read",
+      words: /\b(read|listen|narrate|tell me|speak)\b/,
+      label: "Reading this section",
+      run: () => readCurrentSection() },
+
+    { say: "download resume",
+      words: /\b(resume|cv)\b/,
+      label: "Opening resume",
+      run: () => {
+          const link = document.querySelector('a[href$="resume.pdf"]');
+          if (link) link.click();
+      } },
+
+    { say: "home",
+      words: /\b(home|top|beginning|start)\b/,
+      label: "Going to home",
+      run: () => goTo("home") },
+
+    { say: "about",
+      words: /\babout\b/,
+      label: "Going to about",
+      run: () => goTo("about") },
+
+    { say: "skills",
+      words: /\b(skills?|toolkit)\b/,
+      label: "Going to skills",
+      run: () => goTo("skills") },
+
+    { say: "projects",
+      words: /\b(projects?|work|portfolio)\b/,
+      label: "Going to projects",
+      run: () => goTo("projects") },
+
+    { say: "showcase",
+      words: /\b(showcase|motion)\b/,
+      label: "Going to showcase",
+      run: () => goTo("showcase") },
+
+    { say: "contact",
+      words: /\b(contact|email|hire|reach)\b/,
+      label: "Going to contact",
+      run: () => goTo("contact") },
+
+    { say: "scroll down",
+      words: /\b(scroll down|down|next)\b/,
+      label: "Scrolling down",
+      run: () => window.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" }) },
+
+    { say: "scroll up",
+      words: /\b(scroll up|up|back|previous)\b/,
+      label: "Scrolling up",
+      run: () => window.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" }) }
+];
+
+const HINT =
+    "Say: home · about · skills · projects · showcase · contact · " +
+    "read · stop · play video · pause · download resume · scroll down";
+
+// the recogniser gives a few guesses; try each until one is a command
+function handleCommand(alternatives) {
+
+    for (const raw of alternatives) {
+
+        const said = raw.toLowerCase().replace(/[.,!?]/g, "").trim();
+
+        for (const cmd of commands) {
+            if (cmd.words.test(said)) {
+                showToast(`✓ ${cmd.label}  (heard “${said}”)`);
+                cmd.run();
+                return;
+            }
+        }
     }
 
-    if (/\b(home|top|start)\b/.test(said)) return goTo("home", "home");
-    if (/\babout\b/.test(said)) return goTo("about", "about");
-    if (/\bskills?\b/.test(said)) return goTo("skills", "skills");
-    if (/\b(projects?|work)\b/.test(said)) return goTo("projects", "projects");
-    if (/\b(showcase|motion)\b/.test(said)) return goTo("showcase", "showcase");
-    if (/\b(contact|email|hire)\b/.test(said)) return goTo("contact", "contact");
-
-    if (/\bresume\b/.test(said)) {
-        const link = document.querySelector('a[href$="resume.pdf"]');
-        if (link) link.click();
-        return;
-    }
-
-    if (/\bscroll down\b|\bdown\b/.test(said))
-        return window.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" });
-    if (/\bscroll up\b|\bup\b/.test(said))
-        return window.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" });
-
-    showToast(`Didn't catch a command in "${said}"`);
+    showToast(
+        `Didn't catch that (heard “${alternatives[0].trim()}”). ` +
+        `Try: projects, contact, read, stop`, 3800
+    );
 }
 
 let recognition = null;
 let micOn = false;
 
+function setMicUI(on) {
+    micOn = on;
+    micBtn.classList.toggle("active", on);
+    micBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    const label = micBtn.querySelector("span");
+    if (label) label.textContent = on ? "Listening" : "Voice";
+}
+
 function startMic() {
+
     recognition = new SpeechRec();
     recognition.lang = "en-IN";
     recognition.continuous = true;
     recognition.interimResults = false;
+    recognition.maxAlternatives = 3;
 
     recognition.onresult = event => {
-        // don't react to the narrator's own voice
-        if (listenBtn && listenBtn.classList.contains("active")) {
-            const lower = event.results[event.results.length - 1][0]
-                .transcript.toLowerCase();
-            if (!/\b(stop|quiet|silence)\b/.test(lower)) return;
-        }
+
         const result = event.results[event.results.length - 1];
-        if (result.isFinal) handleCommand(result[0].transcript);
+        if (!result.isFinal) return;
+
+        const alternatives = Array.from(result)
+            .map(alt => alt.transcript);
+
+        // ignore the narrator's own voice, except "stop"
+        if (listenBtn && listenBtn.classList.contains("active")) {
+            const heardStop = alternatives
+                .some(a => /\b(stop|quiet|silence|enough)\b/i.test(a));
+            if (!heardStop) return;
+        }
+
+        handleCommand(alternatives);
     };
 
     recognition.onerror = event => {
-        if (event.error === "not-allowed" || event.error === "service-not-allowed") {
-            showToast("Microphone permission was blocked");
-            micOn = false;
-            micBtn.classList.remove("active");
-            micBtn.setAttribute("aria-pressed", "false");
+
+        if (event.error === "not-allowed" ||
+            event.error === "service-not-allowed") {
+            showToast("Microphone blocked. Allow it in the address bar, then try again.", 4500);
+            setMicUI(false);
+        } else if (event.error === "audio-capture") {
+            showToast("No microphone found.", 3500);
+            setMicUI(false);
+        } else if (event.error === "network") {
+            showToast("Voice commands need an internet connection.", 3500);
         }
+        // "no-speech" is normal silence, so it is ignored
     };
 
-    // browsers end continuous sessions on silence, so restart while enabled
+    // browsers end continuous sessions on silence, so restart while on
     recognition.onend = () => {
         if (micOn) {
             try { recognition.start(); } catch (e) {}
         }
     };
 
-    recognition.start();
-    micOn = true;
-    micBtn.classList.add("active");
-    micBtn.setAttribute("aria-pressed", "true");
-    showToast("Listening… try “projects”, “contact”, “play video”");
+    try {
+        recognition.start();
+    } catch (e) {
+        return;
+    }
+
+    setMicUI(true);
+    showToast(HINT, 7000);
 }
 
 function stopMic() {
     micOn = false;
     if (recognition) recognition.stop();
-    micBtn.classList.remove("active");
-    micBtn.setAttribute("aria-pressed", "false");
+    setMicUI(false);
     showToast("Voice commands off");
 }
 
