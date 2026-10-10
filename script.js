@@ -544,7 +544,7 @@ if (videoFrame && motionCanvas) {
 
 
 /* =====================================================
-   VOICE: READ ALOUD + VOICE COMMANDS
+   VOICE: NATURAL NARRATION + VOICE COMMANDS
 ===================================================== */
 
 const listenBtn = document.getElementById("listenBtn");
@@ -556,8 +556,60 @@ const synth = window.speechSynthesis;
 const SpeechRec =
     window.SpeechRecognition || window.webkitSpeechRecognition;
 
+
+/* ---------- What the voice says (edit freely) ----------
+   Written the way you'd talk, not copied from the page.
+   Tip: commas make short breaths, full stops make longer pauses. */
+
+const voiceScripts = {
+
+    home:
+        "Hi, I'm Ramkumar. I work with data, mostly in Python and SQL, " +
+        "and I love turning messy numbers into something people can " +
+        "actually use. Have a look around. And if you'd like, you can " +
+        "tap the mic button and just tell me where to go.",
+
+    about:
+        "A little about me. I'm really into machine learning, " +
+        "forecasting, and exploratory data analysis. What excites me " +
+        "most is taking raw data, cleaning it up, and finding the story " +
+        "hiding inside it, so that someone can make a better decision.",
+
+    skills:
+        "Here's my toolkit. I write code in Python, Java, SQL and R. " +
+        "For data science, I use machine learning, forecasting and " +
+        "statistics, with libraries like Pandas, NumPy, Matplotlib and " +
+        "TensorFlow. I build dashboards in Power BI and Tableau, work " +
+        "with MySQL, Oracle and MongoDB, and I can put a website " +
+        "together using HTML, CSS, JavaScript and PHP.",
+
+    projects:
+        "I've built seven projects so far. The first one forecasts " +
+        "renewable energy production in India using ARIMA. Then there's " +
+        "a heart disease prediction model, built with logistic " +
+        "regression in R. After that, an e-learning platform with its " +
+        "own AI chatbot, and a clean e-commerce website. I also made an " +
+        "inventory system with Python and MySQL, an IoT laser security " +
+        "system that watches for gas leaks, and an Excel dashboard for " +
+        "audit testing and compliance tracking. Each one has a link, " +
+        "if you'd like to see the code.",
+
+    showcase:
+        "This little animation shows how I think about data. It starts " +
+        "out scattered and noisy, gets cleaned up, and finally turns " +
+        "into a clear trend you can act on.",
+
+    contact:
+        "If you have a project or an opportunity in mind, I'd love to " +
+        "hear about it. Send me an email, or find me on GitHub and " +
+        "LinkedIn. Thanks so much for stopping by."
+};
+
+
 let speechToken = 0;
 let toastTimer;
+let chosenVoice = null;
+let currentAudio = null;
 
 function showToast(message) {
     if (!voiceToast) return;
@@ -569,40 +621,187 @@ function showToast(message) {
     );
 }
 
-/* ---------- Text to speech ---------- */
+function setSpeakingUI(on) {
+    if (!listenBtn) return;
+    listenBtn.classList.toggle("active", on);
+    listenBtn.setAttribute("aria-pressed", on ? "true" : "false");
+}
+
+
+/* ---------- Choose the most natural voice available ---------- */
+
+function scoreVoice(voice) {
+
+    const name = voice.name.toLowerCase();
+    const lang = voice.lang.toLowerCase().replace("_", "-");
+
+    if (!lang.startsWith("en")) return -1000;
+
+    let score = 0;
+
+    if (name.includes("natural")) score += 100;   // Edge online voices
+    if (name.includes("neural")) score += 90;
+    if (name.includes("google")) score += 50;     // Chrome
+    if (name.includes("online")) score += 30;
+    if (/aria|jenny|sonia|neerja|prabhat|ryan|guy|samantha|karen|moira|serena|daniel/
+        .test(name)) score += 20;
+
+    if (lang === "en-in") score += 15;
+    else if (lang === "en-us" || lang === "en-gb") score += 10;
+
+    if (name.includes("espeak")) score -= 200;
+
+    return score;
+}
+
+function loadVoices() {
+
+    if (!synth) return;
+
+    const voices = synth.getVoices()
+        .filter(v => v.lang.toLowerCase().startsWith("en"))
+        .sort((a, b) => scoreVoice(b) - scoreVoice(a));
+
+    if (!voices.length) return;
+
+    let saved = null;
+    try { saved = localStorage.getItem("portfolioVoice"); } catch (e) {}
+
+    chosenVoice =
+        voices.find(v => v.name === saved) || voices[0];
+
+    buildVoiceSelect(voices);
+}
+
+function buildVoiceSelect(voices) {
+
+    if (!voiceDock || voices.length < 2) return;
+
+    let select = document.getElementById("voiceSelect");
+
+    if (!select) {
+
+        const style = document.createElement("style");
+        style.textContent = `
+            .voice-select {
+                max-width: 150px;
+                padding: 10px 12px;
+                border: 1px solid rgba(255,255,255,.2);
+                border-radius: 50px;
+                background: rgba(20,20,20,.75);
+                color: white;
+                font-family: inherit;
+                font-size: 10px;
+                letter-spacing: .08em;
+                cursor: pointer;
+            }
+            .voice-select:hover { border-color: #b44cff; }
+            .voice-select option { background: #111; color: white; }
+            @media (max-width: 500px) { .voice-select { display: none; } }
+        `;
+        document.head.appendChild(style);
+
+        select = document.createElement("select");
+        select.id = "voiceSelect";
+        select.className = "voice-select";
+        select.setAttribute("aria-label", "Choose narrator voice");
+        voiceDock.prepend(select);
+
+        select.addEventListener("change", () => {
+            chosenVoice =
+                voices.find(v => v.name === select.value) || chosenVoice;
+            try {
+                localStorage.setItem("portfolioVoice", select.value);
+            } catch (e) {}
+            readCurrentSection();   // preview the new voice
+        });
+    }
+
+    select.innerHTML = "";
+
+    voices.forEach(voice => {
+        const option = document.createElement("option");
+        option.value = voice.name;
+        option.textContent =
+            voice.name.replace(/Microsoft |Online \(Natural\) - /g, "");
+        if (chosenVoice && voice.name === chosenVoice.name)
+            option.selected = true;
+        select.appendChild(option);
+    });
+}
+
+if (synth) {
+    loadVoices();
+    synth.addEventListener("voiceschanged", loadVoices);
+}
+
+
+/* ---------- Speaking ---------- */
 
 function stopSpeaking() {
     speechToken++;
     if (synth) synth.cancel();
-    if (listenBtn) {
-        listenBtn.classList.remove("active");
-        listenBtn.setAttribute("aria-pressed", "false");
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
     }
+    setSpeakingUI(false);
 }
 
-function speak(text) {
+function splitSentences(text) {
+    return (text.replace(/\s+/g, " ").trim()
+        .match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text])
+        .map(s => s.trim())
+        .filter(Boolean);
+}
+
+// one sentence at a time, with a short human-sized pause between them
+function speakText(text) {
+
     if (!synth) return;
+
     stopSpeaking();
 
     const myToken = speechToken;
-    const chunks =
-        text.replace(/\s+/g, " ").match(/[^.!?]+[.!?]?/g) || [text];
+    const parts = splitSentences(text);
 
-    listenBtn.classList.add("active");
-    listenBtn.setAttribute("aria-pressed", "true");
+    setSpeakingUI(true);
 
-    chunks.forEach((chunk, index) => {
-        const utterance = new SpeechSynthesisUtterance(chunk.trim());
-        utterance.lang = "en-IN";
-        utterance.rate = 1;
+    const next = index => {
 
-        if (index === chunks.length - 1) {
-            utterance.onend = () => {
-                if (myToken === speechToken) stopSpeaking();
-            };
+        if (myToken !== speechToken) return;
+
+        if (index >= parts.length) {
+            stopSpeaking();
+            return;
         }
+
+        const sentence = parts[index];
+        const utterance = new SpeechSynthesisUtterance(sentence);
+
+        if (chosenVoice) {
+            utterance.voice = chosenVoice;
+            utterance.lang = chosenVoice.lang;
+        } else {
+            utterance.lang = "en-IN";
+        }
+
+        utterance.rate = 0.96;
+        utterance.pitch = sentence.endsWith("?") ? 1.08 : 1;
+
+        utterance.onend = () => {
+            setTimeout(() => next(index + 1), 280);
+        };
+
+        utterance.onerror = () => {
+            if (myToken === speechToken)
+                setTimeout(() => next(index + 1), 50);
+        };
+
         synth.speak(utterance);
-    });
+    };
+
+    next(0);
 }
 
 function currentSection() {
@@ -622,19 +821,41 @@ function currentSection() {
 }
 
 function readCurrentSection() {
+
     const section = currentSection();
     if (!section) return;
 
-    const source =
-        section.querySelector(".hero-content, .section-content, .contact-content")
-        || section;
+    const id = section.id || "home";
 
-    const text = source.innerText
-        .replace(/View Project →/g, "")
-        .replace(/[•→]/g, ",");
+    const script =
+        voiceScripts[id] ||
+        (section.innerText || "").replace(/[•→]/g, ",");
 
-    speak(text);
+    stopSpeaking();
+    const myToken = speechToken;
+
+    // 1) If you recorded your own voice, use it: assets/voice/<section>.mp3
+    //    (e.g. assets/voice/about.mp3). 2) Otherwise use the browser voice.
+    const fallback = () => {
+        if (myToken === speechToken) speakText(script);
+    };
+
+    const audio = new Audio(`assets/voice/${id}.mp3`);
+
+    audio.addEventListener("canplaythrough", () => {
+        if (myToken !== speechToken) return;
+        currentAudio = audio;
+        setSpeakingUI(true);
+        audio.play().catch(fallback);
+    }, { once: true });
+
+    audio.addEventListener("ended", () => {
+        if (myToken === speechToken) stopSpeaking();
+    });
+
+    audio.addEventListener("error", fallback, { once: true });
 }
+
 
 /* ---------- Voice commands ---------- */
 
@@ -651,7 +872,7 @@ function handleCommand(raw) {
     showToast(`"${said}"`);
 
     if (/\b(stop|quiet|silence)\b/.test(said)) return stopSpeaking();
-    if (/\b(read|listen|speak)\b/.test(said)) return readCurrentSection();
+    if (/\b(read|listen|speak|tell me)\b/.test(said)) return readCurrentSection();
 
     if (/\b(pause)\b/.test(said) && window.setShowcasePaused)
         return window.setShowcasePaused(true);
@@ -691,6 +912,12 @@ function startMic() {
     recognition.interimResults = false;
 
     recognition.onresult = event => {
+        // don't react to the narrator's own voice
+        if (listenBtn && listenBtn.classList.contains("active")) {
+            const lower = event.results[event.results.length - 1][0]
+                .transcript.toLowerCase();
+            if (!/\b(stop|quiet|silence)\b/.test(lower)) return;
+        }
         const result = event.results[event.results.length - 1];
         if (result.isFinal) handleCommand(result[0].transcript);
     };
@@ -725,6 +952,7 @@ function stopMic() {
     micBtn.setAttribute("aria-pressed", "false");
     showToast("Voice commands off");
 }
+
 
 /* ---------- Wire up ---------- */
 
