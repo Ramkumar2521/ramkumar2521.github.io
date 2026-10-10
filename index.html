@@ -30,6 +30,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
+        <li><a href="#showcase">Showcase</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
 
@@ -432,7 +433,80 @@
 
             </article>
 
+
+            <article class="project-card tilt reveal">
+
+                <div class="project-number">07</div>
+
+                <h3>
+                    Audit Quality Testing
+                    & Compliance Tracker
+                </h3>
+
+                <p>
+                    Excel dashboard and audit register for tracking
+                    control tests, exceptions, compliance percentages,
+                    risk ratings and remediation progress, with
+                    reference lists and lookups for consistent
+                    reporting.
+                </p>
+
+                <div class="tags">
+                    <span>Excel</span>
+                    <span>Dashboard</span>
+                    <span>Risk Tracking</span>
+                </div>
+
+                <a href="https://github.com/Ramkumar2521/audit-quality-testing-compliance-tracker"
+                   target="_blank"
+                   rel="noopener">
+                    View Project →
+                </a>
+
+            </article>
+
         </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SHOWCASE ================= -->
+
+<section id="showcase" class="content-section showcase-section">
+
+    <div class="section-label">
+        04 / SHOWCASE
+    </div>
+
+    <div class="section-content">
+
+        <h2>
+            In <span>motion.</span>
+        </h2>
+
+        <div class="video-frame reveal">
+
+            <!-- Animated fallback: plays until your video file loads -->
+            <canvas id="motionCanvas"
+                    aria-label="Animation showing raw data turning into insight"></canvas>
+
+            <video id="showcaseVideo"
+                   poster="assets/video-poster.jpg"
+                   muted loop playsinline preload="metadata">
+                <source src="assets/portfolio-animation.mp4" type="video/mp4">
+            </video>
+
+            <button class="video-play"
+                    id="videoPlay"
+                    aria-label="Pause animation">❚❚</button>
+
+        </div>
+
+        <p class="video-caption">
+            From raw data to decisions: clean, model, and explain.
+        </p>
 
     </div>
 
@@ -444,7 +518,7 @@
 <section id="contact" class="contact-section content-section">
 
     <div class="section-label">
-        04 / CONTACT
+        05 / CONTACT
     </div>
 
     <div class="contact-content">
@@ -495,6 +569,25 @@
     </p>
 
 </footer>
+
+
+<!-- ================= VOICE DOCK ================= -->
+
+<div class="voice-dock" id="voiceDock" hidden>
+
+    <button class="voice-btn" id="listenBtn" aria-pressed="false"
+            title="Read this section aloud">
+        🔊 <span>Listen</span>
+    </button>
+
+    <button class="voice-btn" id="micBtn" aria-pressed="false"
+            title="Voice commands: say 'projects', 'contact', 'play video'...">
+        🎙 <span>Voice</span>
+    </button>
+
+</div>
+
+<div class="voice-toast" id="voiceToast" role="status" aria-live="polite"></div>
 
 
 <script src="script.js"></script>
